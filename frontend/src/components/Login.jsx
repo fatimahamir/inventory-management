@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 function Login() {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Signup
   const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post(`${API_URL}/login`, {
         username,
         password
       });
@@ -61,7 +62,7 @@ localStorage.setItem('user', JSON.stringify(response.data.user));
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/signup', {
+         const response = await axios.post(`${API_URL}/signup`, {
         username,
         email,
         password
