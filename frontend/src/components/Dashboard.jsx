@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link, Routes, Route } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 function Dashboard() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -61,7 +61,7 @@ function Dashboard() {
         return;
       }
       
-      const response = await axios.get(`http://localhost:5000/api/products?userId=${userId}`);
+      const response = await axios.get(`${API_URL}/products?userId=${userId}`);
       setProducts(response.data.data);
       setFilteredProducts(response.data.data);
       
@@ -149,7 +149,7 @@ function Dashboard() {
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user?.id || user?._id;
         
-        await axios.delete(`http://localhost:5000/api/products/${product._id}?userId=${userId}`);
+        await axios.delete(`${API_URL}/products/${product._id}?userId=${userId}`);
         await fetchProducts();
         Swal.fire('Deleted!', 'Product has been deleted.', 'success');
       } catch (error) {
@@ -171,10 +171,10 @@ function Dashboard() {
       };
       
       if (editingProduct) {
-        await axios.put(`http://localhost:5000/api/products/${editingProduct._id}`, productData);
+        await axios.put(`${API_URL}/products/${editingProduct._id}`, productData);
         Swal.fire('Updated!', 'Product has been updated.', 'success');
       } else {
-        await axios.post('http://localhost:5000/api/products', productData);
+        await 	axios.post(`${API_URL}/products`, productData);
         Swal.fire('Created!', 'Product has been added.', 'success');
       }
       setShowModal(false);
