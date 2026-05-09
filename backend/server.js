@@ -243,8 +243,25 @@ app.get('/', (req, res) => {
 });
 
 // ==================== START SERVER ====================
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// ===== START SERVER =====
+const PORT = parseInt(process.env.PORT) || 5000;
+
+console.log(`⚙️ Attempting to start server on port ${PORT}...`);
+
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(` Server running on port ${PORT}`);
   console.log(`📍 http://0.0.0.0:${PORT}`);
-});"" 
+});
+
+// Agar server start na ho sake to error catch karein
+server.on('error', (err) => {
+  console.error('❌ Server failed to start:', err.message);
+  console.error('Full error:', err);
+  process.exit(1);
+});
+
+// Global crash catcher
+process.on('uncaughtException', (err) => {
+  console.error('💥 Uncaught Exception:', err.message);
+  process.exit(1);
+});
